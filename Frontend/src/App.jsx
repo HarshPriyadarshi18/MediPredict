@@ -14,7 +14,8 @@ import { UserContextProvider } from "./context/UserContext";
 
 function App() {
   return (
-    
+    <UserContextProvider>
+      <Router>
         <div className="App">
           <Routes>
             {/* Routes without Navbar */}
@@ -87,7 +88,8 @@ function App() {
             />
           </Routes>
         </div>
-   
+      </Router>
+    </UserContextProvider>
   );
 }
 

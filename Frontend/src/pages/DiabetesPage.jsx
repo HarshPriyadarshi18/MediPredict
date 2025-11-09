@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { FaStethoscope } from "react-icons/fa";
+import "../App.css";
 
 const DiabetesPage = () => {
   const [formData, setFormData] = useState({
@@ -9,92 +10,62 @@ const DiabetesPage = () => {
     skinThickness: "",
     insulin: "",
     bmi: "",
-    diabetesPedigree: "",
+    dpf: "",
     age: "",
   });
-
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    setResult(null);
-
-    try {
-      const res = await axios.post("http://localhost:5000/api/v1/predict/diabetes", formData);
-      setResult(res.data);
-    } catch (err) {
-      console.error(err);
-      alert("Error while predicting diabetes risk.");
-    } finally {
-      setLoading(false);
-    }
+    console.log("Form Data Submitted:", formData);
+    // Add your prediction API call here
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10">
-      <h1 className="text-3xl font-bold mb-6 text-blue-700">🩸 Diabetes Prediction</h1>
-
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-2xl shadow-md w-full max-w-lg grid grid-cols-2 gap-4"
-      >
-        {Object.keys(formData).map((key) => (
-          <div key={key} className="flex flex-col">
-            <label className="text-sm font-semibold capitalize mb-1">
-              {key.replace(/([A-Z])/g, " $1")}
-            </label>
-            <input
-              type="number"
-              step="any"
-              name={key}
-              value={formData[key]}
-              onChange={handleChange}
-              required
-              className="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
-            />
-          </div>
-        ))}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="col-span-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold"
-        >
-          {loading ? "Predicting..." : "Predict Diabetes Risk"}
-        </button>
-      </form>
-
-      {result && (
-        <div className="mt-8 bg-white p-6 rounded-2xl shadow-md w-full max-w-lg">
-          <h2 className="text-xl font-bold mb-4 text-gray-800">Prediction Results</h2>
-
-          {result.model_predictions &&
-            Object.entries(result.model_predictions).map(([model, prob]) => (
-              <p key={model} className="text-gray-700">
-                <strong>{model}</strong>: {(prob * 100).toFixed(2)}% diabetic risk
-              </p>
-            ))}
-
-          <div className="mt-4 p-3 rounded-lg bg-gray-50 border-t-2 border-blue-500">
-            <p className="text-lg font-semibold">
-              {result.finalDiagnosis === "High Risk"
-                ? "🩸 High Diabetes Risk"
-                : result.finalDiagnosis === "Moderate Risk"
-                ? "⚠️ Moderate Diabetes Risk"
-                : "✅ Low Diabetes Risk"}
-            </p>
-            <p className="text-sm text-gray-600">
-              Average Risk: {(result.averageRisk * 100).toFixed(2)}%
-            </p>
-          </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
+      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-3xl">
+        <div className="flex items-center mb-6">
+          <FaStethoscope className="text-3xl text-blue-500 mr-3" />
+          <h1 className="text-3xl font-bold text-gray-800">
+            Diabetes Risk Prediction
+          </h1>
         </div>
-      )}
+        <p className="text-gray-600 mb-8">
+          Enter your health parameters below to estimate your risk of diabetes.
+        </p>
+
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+        >
+          {Object.keys(formData).map((key) => (
+            <div key={key} className="flex flex-col">
+              <label className="font-medium text-gray-700 mb-1 capitalize">
+                {key}
+              </label>
+              <input
+                type="number"
+                name={key}
+                value={formData[key]}
+                onChange={handleChange}
+                placeholder={`Enter ${key}`}
+                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+                required
+              />
+            </div>
+          ))}
+
+          <button
+            type="submit"
+            className="col-span-1 sm:col-span-2 bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition-all mt-4"
+          >
+            🔍 Predict Diabetes Risk
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
