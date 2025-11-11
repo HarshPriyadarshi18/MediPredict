@@ -14,14 +14,37 @@ const DiabetesPage = () => {
     age: "",
   });
 
+  const [result, setResult] = useState(null); // store API response
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    // Add your prediction API call here
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
+    try {
+      const response = await fetch("http://127.0.0.1:5000/predict_diabetes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch prediction");
+
+      const data = await response.json();
+      setResult(data);
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,9 +85,30 @@ const DiabetesPage = () => {
             type="submit"
             className="col-span-1 sm:col-span-2 bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition-all mt-4"
           >
-            🔍 Predict Diabetes Risk
+            {loading ? "Predicting..." : "🔍 Predict Diabetes Risk"}
           </button>
         </form>
+
+        {error && <p className="text-red-500 mt-4 font-medium">Error: {error}</p>}
+
+        {result && (
+          <div className="mt-6 bg-gray-100 p-4 rounded-xl">
+            <h2 className="text-xl font-bold mb-2">Prediction Results:</h2>
+            <ul className="mb-2">
+              {Object.entries(result.risks).map(([model, prob]) => (
+                <li key={model}>
+                  <strong>{model}:</strong> {prob}%
+                </li>
+              ))}
+            </ul>
+            <p className="font-medium">
+              <strong>Average Risk:</strong> {result.averageRisk}%
+            </p>
+            <p className="font-medium">
+              <strong>Final Status:</strong> {result.finalStatus}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
