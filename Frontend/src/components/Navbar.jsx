@@ -30,7 +30,7 @@ const Navbar =() =>{
   const fetchProfile = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/v1/users/profile",
+        "http://localhost:3000/api/v1/users/profile",
         {
           credentials: "include",
         }
@@ -50,7 +50,7 @@ const Navbar =() =>{
   const logout = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/v1/users/logout",
+        "http://localhost:3000/api/v1/users/logout",
         {
           credentials: "include",
           method: "POST",

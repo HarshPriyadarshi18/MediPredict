@@ -3,42 +3,50 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.routes.js";
 import predRouter from "./routes/prediction.routes.js";
-import pdfRouter from "./routes/pdf.routes.js"; // Import pdfRoutes
+import pdfRouter from "./routes/pdf.routes.js";
 import dotenv from "dotenv";
+
 dotenv.config();
+
 const app = express();
 
-const allowedOrigins = process.env.CORS_ORIGIN.split(",");
+// ✅ CORS Setup (single, correct version)
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",")
+  : ["http://localhost:5173", "http://localhost:3000"];
 
+  
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // Allow requests with no origin, like mobile apps or curl requests
-      if (
-        allowedOrigins.indexOf("*") !== -1 ||
-        allowedOrigins.indexOf(origin) !== -1
-      ) {
-        return callback(null, true);
+      if (!origin) return callback(null, true); // Allow requests like Postman
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
       } else {
-        return callback(new Error("Not allowed by CORS"));
+        console.log("❌ Blocked by CORS:", origin);
+        callback(new Error("Not allowed by CORS"));
       }
     },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
-);
+); 
 
-app.use(cors({ origin: "https://predicti-x-v2.vercel.app", credentials: true }));
-
-// Configurations for different types of data acceptance
-// Limiting json data acceptance
-app.use(express.json());
+// ✅ Parse JSON and cookies
+app.use(express.json({ limit: "20kb" }));
 app.use(express.urlencoded({ extended: true, limit: "20kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
-// Routes declaration
+// ✅ Routes declaration
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/predict", predRouter);
-app.use("/api/pdf", pdfRouter);// Add this line to include the new PDF routes
+app.use("/api/pdf", pdfRouter);
+
+// ✅ Test route
+app.get("/", (req, res) => {
+  res.json({ message: "🚀 Backend running & CORS configured correctly!" });
+});
 
 export { app };

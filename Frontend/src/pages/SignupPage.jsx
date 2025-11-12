@@ -54,7 +54,7 @@ function SignupPage() {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/v1/users/register",
+        "http://localhost:3000/api/v1/users/register",
         {
           method: "POST",
           body: JSON.stringify({ fullname, username, email, password }),

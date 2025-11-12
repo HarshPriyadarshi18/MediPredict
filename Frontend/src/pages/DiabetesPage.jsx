@@ -3,7 +3,7 @@ import { FaStethoscope } from "react-icons/fa";
 import "../App.css";
 
 const DiabetesPage = () => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     pregnancies: "",
     glucose: "",
     bloodPressure: "",
@@ -12,9 +12,10 @@ const DiabetesPage = () => {
     bmi: "",
     dpf: "",
     age: "",
-  });
+  };
 
-  const [result, setResult] = useState(null); // store API response
+  const [formData, setFormData] = useState(initialFormData);
+  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -40,11 +41,16 @@ const DiabetesPage = () => {
       const data = await response.json();
       setResult(data);
     } catch (err) {
-      console.error(err);
       setError(err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleReset = () => {
+    setFormData(initialFormData);
+    setResult(null);
+    setError(null);
   };
 
   return (
@@ -81,12 +87,21 @@ const DiabetesPage = () => {
             </div>
           ))}
 
-          <button
-            type="submit"
-            className="col-span-1 sm:col-span-2 bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition-all mt-4"
-          >
-            {loading ? "Predicting..." : "🔍 Predict Diabetes Risk"}
-          </button>
+          <div className="col-span-1 sm:col-span-2 flex justify-between mt-4">
+            <button
+              type="submit"
+              className="bg-blue-600 text-white py-3 px-6 rounded-xl hover:bg-blue-700 transition-all"
+            >
+              {loading ? "Predicting..." : "🔍 Predict"}
+            </button>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="bg-gray-400 text-white py-3 px-6 rounded-xl hover:bg-gray-500 transition-all"
+            >
+              ♻️ Reset
+            </button>
+          </div>
         </form>
 
         {error && <p className="text-red-500 mt-4 font-medium">Error: {error}</p>}
