@@ -133,7 +133,7 @@ def predict_heart():
             "heartRate",
             "glucose",
         ]
-#6
+        
         # Compute column means to use as simple imputation for missing/NA inputs
         column_means = X.mean().to_dict()
 
