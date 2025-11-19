@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import "../App.css";
-import SignupVector from "../assets/SignupVector.png";
+import HarshImage from "../assets/harsh.png";
 import { UserContext } from "../context/UserContext";
 import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -133,7 +133,7 @@ function SignupPage() {
           </div>
         </div>
         <div className="signup-image">
-          <img src={SignupVector} alt="Signup Vector" />
+          <img src={HarshImage} alt="Harsh" />
         </div>
       </div>
     </div>

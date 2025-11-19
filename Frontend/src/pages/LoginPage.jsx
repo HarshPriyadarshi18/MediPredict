@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import "../App.css";
-import LoginVector from "../assets/LoginVector.png";
+import LoginVector from "../assets/Screenshot (1279).png";
 import { UserContext } from "../context/UserContext";
 import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";

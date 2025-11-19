@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom"; // Import Link from React Router
-import homepageImage from "../assets/homepage.png";
+import homepageImage from "../assets/harsh.png";
 
 const Hero = () => {
   return (
