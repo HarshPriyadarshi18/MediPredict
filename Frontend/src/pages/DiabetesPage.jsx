@@ -52,76 +52,97 @@ const DiabetesPage = () => {
     setResult(null);
     setError(null);
   };
+  const prettyLabel = (key) => {
+    const map = {
+      pregnancies: "Pregnancies",
+      glucose: "Glucose",
+      bloodPressure: "Blood Pressure",
+      skinThickness: "Skin Thickness",
+      insulin: "Insulin",
+      bmi: "BMI",
+      dpf: "Diabetes Pedigree Func.",
+      age: "Age",
+    };
+    return map[key] || key;
+  };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-3xl">
-        <div className="flex items-center mb-6">
-          <FaStethoscope className="text-3xl text-blue-500 mr-3" />
-          <h1 className="text-3xl font-bold text-gray-800">
-            Diabetes Risk Prediction
-          </h1>
+    <div className="diabetes-page-container">
+      <div className="diabetes-card">
+        <div className="diabetes-card-header">
+          <FaStethoscope className="diabetes-icon" />
+          <div>
+            <h1 className="diabetes-page-header">Diabetes Risk Prediction</h1>
+            <p className="small-note">Enter health parameters to estimate diabetes risk.</p>
+          </div>
         </div>
-        <p className="text-gray-600 mb-8">
-          Enter your health parameters below to estimate your risk of diabetes.
-        </p>
 
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-6"
-        >
-          {Object.keys(formData).map((key) => (
-            <div key={key} className="flex flex-col">
-              <label className="font-medium text-gray-700 mb-1 capitalize">
-                {key}
-              </label>
-              <input
-                type="number"
-                name={key}
-                value={formData[key]}
-                onChange={handleChange}
-                placeholder={`Enter ${key}`}
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
-                required
-              />
-            </div>
-          ))}
+        <form onSubmit={handleSubmit} className="diabetes-page-form">
+          <div className="diabetes-page-input-container diabetes-form-grid">
+            {Object.keys(formData).map((key) => (
+              <div key={key} className="diabetes-input-wrap">
+                <label htmlFor={key} className="diabetes-label">
+                  {prettyLabel(key)}
+                </label>
+                <input
+                  id={key}
+                  type="number"
+                  name={key}
+                  value={formData[key]}
+                  onChange={handleChange}
+                  placeholder={`Enter ${prettyLabel(key)}`}
+                  className="diabetes-page-input"
+                  required
+                />
+              </div>
+            ))}
+          </div>
 
-          <div className="col-span-1 sm:col-span-2 flex justify-between mt-4">
-            <button
-              type="submit"
-              className="bg-blue-600 text-white py-3 px-6 rounded-xl hover:bg-blue-700 transition-all"
-            >
+          <div className="diabetes-page-actions">
+            <button type="submit" className="diabetes-page-button">
               {loading ? "Predicting..." : "🔍 Predict"}
             </button>
             <button
               type="button"
               onClick={handleReset}
-              className="bg-gray-400 text-white py-3 px-6 rounded-xl hover:bg-gray-500 transition-all"
+              className="diabetes-page-button diabetes-page-reset"
             >
               ♻️ Reset
             </button>
           </div>
         </form>
 
-        {error && <p className="text-red-500 mt-4 font-medium">Error: {error}</p>}
+        {error && <div className="error-message">Error: {error}</div>}
 
         {result && (
-          <div className="mt-6 bg-gray-100 p-4 rounded-xl">
-            <h2 className="text-xl font-bold mb-2">Prediction Results:</h2>
-            <ul className="mb-2">
+          <div className="diabetes-page-result-container">
+            <h2 className="result-header">Prediction Results</h2>
+
+            <div className="risk-list" aria-live="polite">
               {Object.entries(result.risks).map(([model, prob]) => (
-                <li key={model}>
-                  <strong>{model}:</strong> {prob}%
-                </li>
+                <div className="risk-item" key={model}>
+                  <div className="risk-row">
+                    <div className="risk-name">{model}</div>
+                    <div className="risk-value">{prob}%</div>
+                  </div>
+                  <div className="risk-bar" aria-hidden>
+                    <div
+                      className={`risk-fill`}
+                      style={{ width: `${prob}%` }}
+                    />
+                  </div>
+                </div>
               ))}
-            </ul>
-            <p className="font-medium">
-              <strong>Average Risk:</strong> {result.averageRisk}%
-            </p>
-            <p className="font-medium">
-              <strong>Final Status:</strong> {result.finalStatus}
-            </p>
+            </div>
+
+            <div className="result-summary">
+              <p>
+                <strong>Average Risk:</strong> {result.averageRisk}%
+              </p>
+              <p>
+                <strong>Final Status:</strong> {result.finalStatus}
+              </p>
+            </div>
           </div>
         )}
       </div>

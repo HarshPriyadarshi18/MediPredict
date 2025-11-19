@@ -993,6 +993,112 @@ a.diabetes-page-button:visited {
   background-color: #1e40af;
 }
 
+/* Enhanced Diabetes visual styles (added) */
+.diabetes-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(31, 38, 135, 0.08);
+  padding: 28px;
+  max-width: 920px;
+  margin: 24px auto;
+}
+
+.diabetes-card-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.diabetes-icon {
+  color: #2563eb;
+  font-size: 36px;
+}
+
+.small-note {
+  color: #6b7280;
+  margin-top: 4px;
+  font-size: 0.95rem;
+}
+
+.diabetes-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.diabetes-input-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.diabetes-label {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.diabetes-page-input {
+  padding: 10px 12px;
+  border: 1px solid #e6e9ef;
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: box-shadow 0.15s ease, transform 0.12s ease;
+}
+
+.diabetes-page-input:focus {
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.08);
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.45);
+}
+
+.diabetes-page-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.diabetes-page-button {
+  background-color: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.08);
+  transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+.diabetes-page-button:hover { background-color: #1e40af; transform: translateY(-2px); }
+
+.diabetes-page-reset { background-color: #9ca3af; }
+.diabetes-page-reset:hover { background-color: #6b7280; }
+
+.diabetes-page-result-container { margin-top: 18px; }
+
+.result-header { font-size: 1.125rem; margin-bottom: 10px; color: #111827; }
+
+.risk-list { display: flex; flex-direction: column; gap: 12px; }
+.risk-item { display: flex; flex-direction: column; gap: 6px; }
+.risk-row { display:flex; justify-content:space-between; align-items:center; }
+.risk-name { font-weight:600; color:#374151; }
+.risk-value { font-weight:700; color:#111827; }
+.risk-bar { width:100%; height:12px; background:#eef2ff; border-radius:8px; overflow:hidden; }
+.risk-fill { height:100%; background: linear-gradient(90deg,#2563eb,#7dd3fc); border-radius:8px 0 0 8px; transition: width 0.6s ease; }
+
+.result-summary { margin-top:12px; display:flex; gap:18px; flex-wrap:wrap; }
+.result-summary p { margin:0; font-weight:600; color:#111827; }
+
+@media (max-width: 768px) {
+  .diabetes-form-grid { grid-template-columns: 1fr; }
+  .diabetes-card { padding: 18px; margin: 16px; }
+  .diabetes-page-actions { justify-content: space-between; }
+}
+
 /* Heart Page CSS */
 .heart-page-container {
   display: flex;
@@ -1824,6 +1930,43 @@ a.lung-page-button:visited {
   .our__team {
     overflow: auto;
   }
+}
+
+/* Heart page specific styles */
+.heart-card {
+  background: linear-gradient(180deg,#ffffff 0%, #fff7f7 100%);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(220, 38, 38, 0.06);
+  padding: 28px;
+  max-width: 920px;
+  margin: 24px auto;
+}
+
+.heart-card-header { margin-bottom: 12px; }
+.heart-page-header { color: #b91c1c; font-size: 1.5rem; margin:0; }
+
+.heart-form-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+.heart-input-wrap { display:flex; flex-direction:column; }
+.heart-label { font-weight:600; color:#374151; margin-bottom:6px; font-size:0.95rem; }
+.heart-page-input { padding:10px 12px; border:1px solid #f3d4d4; border-radius:10px; font-size:1rem; }
+.heart-page-input:focus { box-shadow:0 6px 18px rgba(185,28,28,0.06); transform: translateY(-1px); border-color: rgba(185,28,28,0.45); }
+
+.heart-page-actions { display:flex; justify-content:flex-end; margin-top:14px; }
+.heart-page-button { background:#dc2626; color:#fff; border:none; padding:10px 18px; border-radius:10px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(220,38,38,0.08); }
+.heart-page-button:hover { background:#b91c1c; transform:translateY(-2px); }
+
+.heart-page-result-container { margin-top:18px; }
+.heart-fill { background: linear-gradient(90deg,#ef4444,#fca5a5); }
+
+.heart-status-healthy { color:#16a34a; font-weight:700; }
+.heart-status-mild { color:#d97706; font-weight:700; }
+.heart-status-unhealthy { color:#ea580c; font-weight:700; }
+.heart-status-high { color:#b91c1c; font-weight:700; }
+
+@media (max-width: 768px) {
+  .heart-form-grid { grid-template-columns: 1fr; }
+  .heart-card { padding:18px; margin:16px; }
+  .heart-page-actions { justify-content: space-between; }
 }
 
 @media (max-width: 576px) {
